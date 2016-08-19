@@ -3,6 +3,9 @@ package com.example.trannh08.ad005database_sqlite;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList contacts = mydb.getAllCotacts();
         ArrayAdapter arrayAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1, contacts);
 
-        obj = (ListView)findViewById(R.id.listView1);
+        obj = (ListView)findViewById(R.id.listView);
         obj.setAdapter(arrayAdapter);
         obj.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -46,5 +49,36 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        super.onOptionsItemSelected(item);
+
+        switch(item.getItemId())
+        {
+            case R.id.mainMenu:Bundle dataBundle = new Bundle();
+                dataBundle.putInt("id", 0);
+
+                Intent intent = new Intent(getApplicationContext(),DisplayContact.class);
+                intent.putExtras(dataBundle);
+
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true);
+        }
+        return super.onKeyDown(keycode, event);
+    }
 }
