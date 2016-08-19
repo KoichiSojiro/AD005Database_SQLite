@@ -124,17 +124,17 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<String> getAllCotacts() {
-        ArrayList<String> contactsList = new ArrayList<String>();
+        ArrayList<String> contacts = new ArrayList<String>();
         //_HashMap = new HashMap();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("select * from " + CONTACTS_TABLE_NAME, null);
         cursor.moveToFirst();
 
         while (cursor.isAfterLast() == false) {
-            contactsList.add(cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_NAME)));
+            contacts.add(cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_NAME)));
             cursor.moveToNext();
         }
 
-        return contactsList;
+        return contacts;
     }
 }
