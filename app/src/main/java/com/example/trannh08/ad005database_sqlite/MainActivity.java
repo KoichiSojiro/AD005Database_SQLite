@@ -1,8 +1,8 @@
 package com.example.trannh08.ad005database_sqlite;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,32 +17,27 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public final static String EXTRA_MESSAGE = "MESSAGE";
-    private ListView obj;
-    DBHelper mydb;
+    private ListView listView;
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mydb = new DBHelper(this);
-        ArrayList contacts = mydb.getAllCotacts();
-        ArrayAdapter arrayAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1, contacts);
+        dbHelper = new DBHelper(this);
+        ArrayList contacts = dbHelper.getAllCotacts();
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, contacts);
 
-        obj = (ListView)findViewById(R.id.listView);
-        obj.setAdapter(arrayAdapter);
-        obj.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(arrayAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                // TODO Auto-generated method stub
-                int id_To_Search = arg2 + 1;
-
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int contactID = position + 1;
                 Bundle dataBundle = new Bundle();
-                dataBundle.putInt("id", id_To_Search);
-
-                Intent intent = new Intent(getApplicationContext(),DisplayContact.class);
-
+                dataBundle.putInt(dbHelper.CONTACTS_COLUMN_ID, contactID);
+                Intent intent = new Intent(getApplicationContext(), DisplayContact.class);
                 intent.putExtras(dataBundle);
                 startActivity(intent);
             }
@@ -57,17 +52,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-
-        switch(item.getItemId())
-        {
-            case R.id.mainMenu:Bundle dataBundle = new Bundle();
-                dataBundle.putInt("id", 0);
-
-                Intent intent = new Intent(getApplicationContext(),DisplayContact.class);
+        switch (item.getItemId()) {
+            case R.id.mainMenu:
+                Bundle dataBundle = new Bundle();
+                dataBundle.putInt(dbHelper.CONTACTS_COLUMN_ID, 0);
+                Intent intent = new Intent(getApplicationContext(), DisplayContact.class);
                 intent.putExtras(dataBundle);
-
                 startActivity(intent);
                 return true;
             default:

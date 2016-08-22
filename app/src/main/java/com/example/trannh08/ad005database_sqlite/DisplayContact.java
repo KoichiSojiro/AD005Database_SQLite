@@ -18,13 +18,14 @@ import com.example.trannh08.ad005database_sqlite.classes.DBHelper;
 public class DisplayContact extends AppCompatActivity {
 
     int from_Where_I_Am_Coming = 0;
-    private DBHelper mydb;
+    private DBHelper dbHelper;
 
-    TextView name;
-    TextView phone;
-    TextView email;
-    TextView street;
-    TextView place;
+    TextView _id;
+    TextView _name;
+    TextView _phone;
+    TextView _email;
+    TextView _street;
+    TextView _city;
     int id_To_Update = 0;
 
     @Override
@@ -32,13 +33,14 @@ public class DisplayContact extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_contact);
 
-        name = (TextView) findViewById(R.id.editText_name);
-        phone = (TextView) findViewById(R.id.editText_phone);
-        email = (TextView) findViewById(R.id.editText_street);
-        street = (TextView) findViewById(R.id.editText_email);
-        place = (TextView) findViewById(R.id.editText_city);
+        _id = (TextView) findViewById(R.id.textView_id);
+        _name = (TextView) findViewById(R.id.editText_name);
+        _phone = (TextView) findViewById(R.id.editText_phone);
+        _email = (TextView) findViewById(R.id.editText_street);
+        _street = (TextView) findViewById(R.id.editText_email);
+        _city = (TextView) findViewById(R.id.editText_city);
 
-        mydb = new DBHelper(this);
+        dbHelper = new DBHelper(this);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -46,15 +48,15 @@ public class DisplayContact extends AppCompatActivity {
 
             if (Value > 0) {
                 //means this is the view part not the add contact part.
-                Cursor rs = mydb.getData(Value);
+                Cursor rs = dbHelper.getData(Value);
                 id_To_Update = Value;
                 rs.moveToFirst();
-
+                String id = rs.getString(rs.getColumnIndex(DBHelper.CONTACTS_COLUMN_ID));
                 String nam = rs.getString(rs.getColumnIndex(DBHelper.CONTACTS_COLUMN_NAME));
-                String phon = rs.getString(rs.getColumnIndex(DBHelper.CONTACTS_COLUMN_PHONE));
-                String emai = rs.getString(rs.getColumnIndex(DBHelper.CONTACTS_COLUMN_EMAIL));
-                String stree = rs.getString(rs.getColumnIndex(DBHelper.CONTACTS_COLUMN_STREET));
-                String plac = rs.getString(rs.getColumnIndex(DBHelper.CONTACTS_COLUMN_CITY));
+                String phone = rs.getString(rs.getColumnIndex(DBHelper.CONTACTS_COLUMN_PHONE));
+                String email = rs.getString(rs.getColumnIndex(DBHelper.CONTACTS_COLUMN_EMAIL));
+                String street = rs.getString(rs.getColumnIndex(DBHelper.CONTACTS_COLUMN_STREET));
+                String city = rs.getString(rs.getColumnIndex(DBHelper.CONTACTS_COLUMN_CITY));
 
                 if (!rs.isClosed()) {
                     rs.close();
@@ -62,25 +64,29 @@ public class DisplayContact extends AppCompatActivity {
                 Button b = (Button) findViewById(R.id.button_save);
                 b.setVisibility(View.INVISIBLE);
 
-                name.setText((CharSequence) nam);
-                name.setFocusable(false);
-                name.setClickable(false);
+                _id.setText((CharSequence) id);
+                _id.setFocusable(false);
+                _id.setClickable(false);
 
-                phone.setText((CharSequence) phon);
-                phone.setFocusable(false);
-                phone.setClickable(false);
+                _name.setText((CharSequence) nam);
+                _name.setFocusable(false);
+                _name.setClickable(false);
 
-                email.setText((CharSequence) emai);
-                email.setFocusable(false);
-                email.setClickable(false);
+                _phone.setText((CharSequence) phone);
+                _phone.setFocusable(false);
+                _phone.setClickable(false);
 
-                street.setText((CharSequence) stree);
-                street.setFocusable(false);
-                street.setClickable(false);
+                _email.setText((CharSequence) email);
+                _email.setFocusable(false);
+                _email.setClickable(false);
 
-                place.setText((CharSequence) plac);
-                place.setFocusable(false);
-                place.setClickable(false);
+                _street.setText((CharSequence) street);
+                _street.setFocusable(false);
+                _street.setClickable(false);
+
+                _city.setText((CharSequence) city);
+                _city.setFocusable(false);
+                _city.setClickable(false);
             }
         }
     }
@@ -107,25 +113,25 @@ public class DisplayContact extends AppCompatActivity {
             case R.id.Edit_Contact:
                 Button b = (Button) findViewById(R.id.button_save);
                 b.setVisibility(View.VISIBLE);
-                name.setEnabled(true);
-                name.setFocusableInTouchMode(true);
-                name.setClickable(true);
+                _name.setEnabled(true);
+                _name.setFocusableInTouchMode(true);
+                _name.setClickable(true);
 
-                phone.setEnabled(true);
-                phone.setFocusableInTouchMode(true);
-                phone.setClickable(true);
+                _phone.setEnabled(true);
+                _phone.setFocusableInTouchMode(true);
+                _phone.setClickable(true);
 
-                email.setEnabled(true);
-                email.setFocusableInTouchMode(true);
-                email.setClickable(true);
+                _email.setEnabled(true);
+                _email.setFocusableInTouchMode(true);
+                _email.setClickable(true);
 
-                street.setEnabled(true);
-                street.setFocusableInTouchMode(true);
-                street.setClickable(true);
+                _street.setEnabled(true);
+                _street.setFocusableInTouchMode(true);
+                _street.setClickable(true);
 
-                place.setEnabled(true);
-                place.setFocusableInTouchMode(true);
-                place.setClickable(true);
+                _city.setEnabled(true);
+                _city.setFocusableInTouchMode(true);
+                _city.setClickable(true);
 
                 return true;
             case R.id.Delete_Contact:
@@ -134,7 +140,7 @@ public class DisplayContact extends AppCompatActivity {
                 builder.setMessage(R.string.deleteContact)
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                mydb.deleteContact(id_To_Update);
+                                dbHelper.deleteContact(id_To_Update);
                                 Toast.makeText(getApplicationContext(), "Deleted Successfully",
                                         Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -162,13 +168,13 @@ public class DisplayContact extends AppCompatActivity {
         if (extras != null) {
             int Value = extras.getInt("id");
             if (Value > 0) {
-                if ((mydb.updateContact(
+                if ((dbHelper.updateContact(
                         id_To_Update,
-                        name.getText().toString(),
-                        phone.getText().toString(),
-                        email.getText().toString(),
-                        street.getText().toString(),
-                        place.getText().toString())
+                        _name.getText().toString(),
+                        _phone.getText().toString(),
+                        _email.getText().toString(),
+                        _street.getText().toString(),
+                        _city.getText().toString())
                 ) > 0) {
                     Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -177,12 +183,12 @@ public class DisplayContact extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "not Updated", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                if ((mydb.insertContact(
-                        name.getText().toString(),
-                        phone.getText().toString(),
-                        email.getText().toString(),
-                        street.getText().toString(),
-                        place.getText().toString())
+                if ((dbHelper.insertContact(
+                        _name.getText().toString(),
+                        _phone.getText().toString(),
+                        _email.getText().toString(),
+                        _street.getText().toString(),
+                        _city.getText().toString())
                 ) > 0) {
                     Toast.makeText(getApplicationContext(), "done", Toast.LENGTH_SHORT).show();
                 } else {
