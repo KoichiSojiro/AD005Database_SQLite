@@ -48,7 +48,7 @@ public class DisplayContact extends AppCompatActivity {
 
             if (Value > 0) {
                 //means this is the view part not the add contact part.
-                Cursor rs = dbHelper.getData(Value);
+                Cursor rs = dbHelper.getDataById(Value);
                 id_To_Update = Value;
                 rs.moveToFirst();
                 String id = rs.getString(rs.getColumnIndex(DBHelper.CONTACTS_COLUMN_ID));

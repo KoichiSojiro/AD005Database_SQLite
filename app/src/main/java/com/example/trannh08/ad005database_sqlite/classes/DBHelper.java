@@ -1,5 +1,6 @@
 package com.example.trannh08.ad005database_sqlite.classes;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,8 +9,9 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.trannh08.ad005database_sqlite.MainActivity;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by trannh08 on 8/19/2016.
@@ -24,6 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CONTACTS_COLUMN_PHONE = "phone";
     public static final String CONTACTS_COLUMN_STREET = "street";
     public static final String CONTACTS_COLUMN_CITY = "city";
+
     //private HashMap _HashMap;
 
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -35,7 +38,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public DBHelper(Context context) {
+
         super(context, DATABASE_NAME, null, 1);
+
     }
 
     @Override
@@ -62,11 +67,19 @@ public class DBHelper extends SQLiteOpenHelper {
         onUpgrade(sqLiteDatabase, oldVersion, newVersion);
     }
 
-    public Cursor getData(int contactID) {
+    public Cursor getDataById(int contactId) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery(
                 "select * from " + CONTACTS_TABLE_NAME
-                        + " where " + CONTACTS_COLUMN_ID + "=" + contactID, null);
+                        + " where " + CONTACTS_COLUMN_ID + "=" + contactId, null);
+        return cursor;
+    }
+
+    public Cursor getDataByName(String contactName) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery(
+                "select * from " + CONTACTS_TABLE_NAME
+                        + " where " + CONTACTS_COLUMN_NAME + "=" + contactName, null);
         return cursor;
     }
 
@@ -94,7 +107,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public int updateContact(Integer contact_id, String contact_name, String contact_email,
-                                 String contact_phone, String contact_street, String contact_city) {
+                             String contact_phone, String contact_street, String contact_city) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(CONTACTS_COLUMN_NAME, contact_name);
@@ -123,9 +136,29 @@ public class DBHelper extends SQLiteOpenHelper {
         return deletedRecords;
     }
 
-    public ArrayList<String> getAllCotacts() {
+    public ArrayList<Contact> getAllContacts() {
+        ArrayList<Contact> contacts = new ArrayList<Contact>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("select * from " + CONTACTS_TABLE_NAME, null);
+        cursor.moveToFirst();
+
+        while (cursor.isAfterLast() == false) {
+            Contact contact = new Contact();
+            contact.Id = cursor.getInt(cursor.getColumnIndex(CONTACTS_COLUMN_ID));
+            contact.Name = cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_NAME));
+            contact.Phone = cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_PHONE));
+            contact.Street = cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_STREET));
+            contact.Email = cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_EMAIL));
+            contact.City = cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_CITY));
+            contacts.add(contact);
+            cursor.moveToNext();
+        }
+
+        return contacts;
+    }
+
+    public ArrayList<String> getAllContactNames() {
         ArrayList<String> contacts = new ArrayList<String>();
-        //_HashMap = new HashMap();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("select * from " + CONTACTS_TABLE_NAME, null);
         cursor.moveToFirst();
