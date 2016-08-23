@@ -34,10 +34,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         contacts = new ArrayList<>();
-
-
         dbHelper = new DBHelper(this);
         textView_contactItem = (TextView) findViewById(R.id.textView_contact_item);
+
         //ArrayList contacts = dbHelper.getAllContactNames();
         //ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, contacts);
         listView = (ListView) findViewById(R.id.listView);
@@ -48,18 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            /*
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int contactID = position + 1;
-                Bundle dataBundle = new Bundle();
-                dataBundle.putInt(dbHelper.CONTACTS_COLUMN_ID, contactID);
-                Intent intent = new Intent(getApplicationContext(), DisplayContact.class);
-                intent.putExtras(dataBundle);
-                startActivity(intent);
-            }
-            */
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int contactID = position + 1;
+                Contact contact = arrayAdapter.getItem(position);
+                int contactID = contact.getId();
                 Bundle dataBundle = new Bundle();
                 dataBundle.putInt(dbHelper.CONTACTS_COLUMN_ID, contactID);
                 Intent intent = new Intent(getApplicationContext(), DisplayContact.class);
@@ -87,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             View viewRow = layoutInflater.inflate(this.resources, null);
             TextView textView = (TextView) viewRow.findViewById(R.id.textView_contact_item);
             final Contact contact = this.contacts.get(position);
-            textView.setText(contact.Name);
+            textView.setText(contact.getName());
             return viewRow;
             //return super.getView(position, convertView, parent);
         }

@@ -144,12 +144,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
         while (cursor.isAfterLast() == false) {
             Contact contact = new Contact();
-            contact.Id = cursor.getInt(cursor.getColumnIndex(CONTACTS_COLUMN_ID));
-            contact.Name = cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_NAME));
-            contact.Phone = cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_PHONE));
-            contact.Street = cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_STREET));
-            contact.Email = cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_EMAIL));
-            contact.City = cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_CITY));
+            contact.setId(cursor.getInt(cursor.getColumnIndex(CONTACTS_COLUMN_ID)));
+            contact.setName(cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_NAME)));
+            contact.setPhone(cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_PHONE)));
+            contact.setStreet(cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_STREET)));
+            contact.setEmail(cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_EMAIL)));
+            contact.setCity(cursor.getString(cursor.getColumnIndex(CONTACTS_COLUMN_CITY)));
             contacts.add(contact);
             cursor.moveToNext();
         }
