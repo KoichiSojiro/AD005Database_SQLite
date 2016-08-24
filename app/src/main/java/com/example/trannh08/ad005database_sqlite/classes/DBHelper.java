@@ -1,6 +1,5 @@
 package com.example.trannh08.ad005database_sqlite.classes;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,8 +7,6 @@ import android.database.DatabaseErrorHandler;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import com.example.trannh08.ad005database_sqlite.MainActivity;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,6 @@
 package com.example.trannh08.ad005database_sqlite.classes;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.stream.Stream;
 
 /**
  * Created by trannh08 on 8/23/2016.

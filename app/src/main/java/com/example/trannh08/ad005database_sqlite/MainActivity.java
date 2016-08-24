@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         // 3. set Adapter for the ListView
         listView.setAdapter(arrayAdapter);
         // 4. update data for ArrayAdapter
-        //arrayAdapter.notifyDataSetChanged();
+        arrayAdapter.notifyDataSetChanged();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
